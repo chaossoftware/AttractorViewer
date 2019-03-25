@@ -43,7 +43,7 @@ namespace viewer
     {
         public bool Equals(structs.point3d x, structs.point3d y)
         {
-            return Math.Abs(x.X - y.X) < 0.1 && Math.Abs(x.Y - y.Y) < 0.1 && Math.Abs(x.Z - y.Z) < 0.1;
+            return Math.Abs(x.X - y.X) < 0.01 && Math.Abs(x.Y - y.Y) < 0.01 && Math.Abs(x.Z - y.Z) < 0.01;
         }
 
 
