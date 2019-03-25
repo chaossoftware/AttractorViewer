@@ -3,10 +3,10 @@ using System.Drawing;
 
 namespace viewer
 {
-    class View3D
+    public class View3D
     {
-        static double[,] Matrix, M_shift, M_rotX, M_rotY, M_rotZ, M_scale, M_screen, M_shiftF;
-        public structs.point3d[] points;
+        private double[,] Matrix, M_shift, M_rotX, M_rotY, M_rotZ, M_scale, M_screen, M_shiftF;
+        public Point3d[] points;
 
         public int M = 200;
 
@@ -15,11 +15,13 @@ namespace viewer
 
         public View3D(Size viewpointSize)
         {
-            Matrix = new double[4, 4] {
+            Matrix = new double[4, 4] 
+            {
                 {1, 0, 0, 0},
                 {0, 1, 0, 0},
                 {0, 0, 1, 0},
-                {0, 0, 0, 1}};
+                {0, 0, 0, 1}
+            };
 
             M_shift = new double[4, 4];
             Array.Copy(Matrix, M_shift, Matrix.Length);
@@ -45,7 +47,6 @@ namespace viewer
             M_screen[2, 0] = viewpointSize.Width / 2;
             M_screen[2, 1] = viewpointSize.Height / 2;
         }
-
 
         public void Initialize(double Distance, double numShiftX, double numShiftY, double numShiftZ, double angleX, double angleY, double angleZ, double scaleX, double scaleY, double scaleZ)
         {
@@ -85,7 +86,6 @@ namespace viewer
             M_rotX[2, 1] = sin;
             M_rotX[2, 2] = cos;
 
-
             cos = Math.Cos(angleY);
             sin = Math.Sin(angleY);
 
@@ -93,7 +93,6 @@ namespace viewer
             M_rotY[0, 2] = sin;
             M_rotY[2, 0] = -1 * sin;
             M_rotY[2, 2] = cos;
-
 
             cos = Math.Cos(angleZ);
             sin = Math.Sin(angleZ);
@@ -119,7 +118,9 @@ namespace viewer
             Matrix = proc.mult(Matrix, M_screen);
 
             for (int i = 0; i < points.Length; i++)
+            {
                 points[i] = proc.multM(read.points[i], Matrix);
+            }
         }
 
         public void Read(string fileName)
@@ -127,12 +128,7 @@ namespace viewer
             read = new reading(fileName);
             proc = new procedures();
             read.read();
-            points = new structs.point3d[read.points.Length];
-        }
-
-        public void RemoveDuplicates()
-        {
-
+            points = new Point3d[read.points.Length];
         }
     }
     /*

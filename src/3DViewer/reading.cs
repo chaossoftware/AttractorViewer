@@ -3,9 +3,9 @@ using System.IO;
 
 namespace viewer
 {
-    class reading
+    public class reading
     {
-        public structs.point3d[] points;
+        public Point3d[] points;
         private string path;
 
         public reading(string fileName)
@@ -20,12 +20,12 @@ namespace viewer
             StreamReader sr = new StreamReader(path);
             string pointCoordinates;
 
-            HashSet<structs.point3d> set = new HashSet<structs.point3d>(new Point3DComparer());
+            HashSet<Point3d> set = new HashSet<Point3d>(new Point3DComparer());
 
             while ((pointCoordinates = sr.ReadLine()) != null)
             {
                 string[] parts = pointCoordinates.Split(' ', '\n', '\r');
-                structs.point3d pt = new structs.point3d();
+                Point3d pt = new Point3d();
                 pt.X = double.Parse(parts[0], System.Globalization.CultureInfo.InvariantCulture);
                 pt.Y = double.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
                 pt.Z = double.Parse(parts[2], System.Globalization.CultureInfo.InvariantCulture);
@@ -33,7 +33,7 @@ namespace viewer
                 set.Add(pt);
             }
 
-            points = new structs.point3d[set.Count];
+            points = new Point3d[set.Count];
             set.CopyTo(points);
         }
     }

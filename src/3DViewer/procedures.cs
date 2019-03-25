@@ -22,9 +22,9 @@
 
         //=============================Multipling matrix & row====================
 
-        public structs.point3d multM(structs.point3d point_, double[,] Matrix)
+        public Point3d multM(Point3d point_, double[,] Matrix)
         {
-            structs.point3d point1 = new structs.point3d();
+            Point3d point1 = new Point3d();
             double[] p = new double[4];
             double[] p1 = new double[4];
 

@@ -114,6 +114,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Parula.cs" />
+    <Compile Include="Point3d.cs" />
     <Compile Include="procedures.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -122,7 +123,7 @@
     </Compile>
     <Compile Include="reading.cs" />
     <Compile Include="View3D.cs" />
-    <Compile Include="structs.cs" />
+    <Compile Include="Point3DComparer.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>

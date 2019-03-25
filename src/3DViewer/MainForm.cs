@@ -460,7 +460,7 @@ namespace viewer
             // 
             this.numDistance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numDistance.Increment = new decimal(new int[] {
-            5,
+            2,
             0,
             0,
             0});
