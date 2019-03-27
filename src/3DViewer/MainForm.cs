@@ -4,11 +4,10 @@ using System.Windows.Forms;
 
 namespace viewer
 {
-
     public class MainForm : Form
     {
         Graphics gr;
-        Pen pen1;
+        Pen pointPen;
         View3D viewpoint;
         int ColorStep;
 
@@ -36,7 +35,6 @@ namespace viewer
         private NumericUpDown num_scaleZ;
         private Button btnZoomIn;
         private Button btnZoomOut;
-        private Button btnDraw;
         private Label lblDistance;
         private NumericUpDown numDistance;
         private TextBox textBox1;
@@ -79,7 +77,6 @@ namespace viewer
             this.label12 = new System.Windows.Forms.Label();
             this.btnZoomIn = new System.Windows.Forms.Button();
             this.btnZoomOut = new System.Windows.Forms.Button();
-            this.btnDraw = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.lblDistance = new System.Windows.Forms.Label();
             this.numDistance = new System.Windows.Forms.NumericUpDown();
@@ -99,10 +96,11 @@ namespace viewer
             // 
             // pictureBox
             // 
+            this.pictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox.Location = new System.Drawing.Point(8, 8);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(640, 640);
+            this.pictureBox.Size = new System.Drawing.Size(750, 750);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
@@ -113,7 +111,7 @@ namespace viewer
             // 
             this.lblShift.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblShift.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblShift.Location = new System.Drawing.Point(686, 71);
+            this.lblShift.Location = new System.Drawing.Point(804, 71);
             this.lblShift.Name = "lblShift";
             this.lblShift.Size = new System.Drawing.Size(42, 16);
             this.lblShift.TabIndex = 2;
@@ -122,7 +120,7 @@ namespace viewer
             // numShiftX
             // 
             this.numShiftX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numShiftX.Location = new System.Drawing.Point(689, 90);
+            this.numShiftX.Location = new System.Drawing.Point(807, 90);
             this.numShiftX.Minimum = new decimal(new int[] {
             100,
             0,
@@ -136,7 +134,7 @@ namespace viewer
             // numShiftY
             // 
             this.numShiftY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numShiftY.Location = new System.Drawing.Point(689, 122);
+            this.numShiftY.Location = new System.Drawing.Point(807, 122);
             this.numShiftY.Minimum = new decimal(new int[] {
             100,
             0,
@@ -150,7 +148,7 @@ namespace viewer
             // numShiftZ
             // 
             this.numShiftZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numShiftZ.Location = new System.Drawing.Point(689, 154);
+            this.numShiftZ.Location = new System.Drawing.Point(807, 154);
             this.numShiftZ.Minimum = new decimal(new int[] {
             100,
             0,
@@ -165,7 +163,7 @@ namespace viewer
             // 
             this.lblShiftX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblShiftX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblShiftX.Location = new System.Drawing.Point(659, 90);
+            this.lblShiftX.Location = new System.Drawing.Point(777, 90);
             this.lblShiftX.Name = "lblShiftX";
             this.lblShiftX.Size = new System.Drawing.Size(24, 24);
             this.lblShiftX.TabIndex = 6;
@@ -175,7 +173,7 @@ namespace viewer
             // 
             this.lblShiftY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblShiftY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblShiftY.Location = new System.Drawing.Point(659, 122);
+            this.lblShiftY.Location = new System.Drawing.Point(777, 122);
             this.lblShiftY.Name = "lblShiftY";
             this.lblShiftY.Size = new System.Drawing.Size(24, 24);
             this.lblShiftY.TabIndex = 7;
@@ -185,7 +183,7 @@ namespace viewer
             // 
             this.lblShiftZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblShiftZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblShiftZ.Location = new System.Drawing.Point(659, 154);
+            this.lblShiftZ.Location = new System.Drawing.Point(777, 154);
             this.lblShiftZ.Name = "lblShiftZ";
             this.lblShiftZ.Size = new System.Drawing.Size(24, 24);
             this.lblShiftZ.TabIndex = 8;
@@ -195,7 +193,7 @@ namespace viewer
             // 
             this.lblRotation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRotation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRotation.Location = new System.Drawing.Point(686, 181);
+            this.lblRotation.Location = new System.Drawing.Point(804, 181);
             this.lblRotation.Name = "lblRotation";
             this.lblRotation.Size = new System.Drawing.Size(60, 16);
             this.lblRotation.TabIndex = 9;
@@ -210,7 +208,7 @@ namespace viewer
             0,
             0,
             65536});
-            this.numAngleX.Location = new System.Drawing.Point(689, 200);
+            this.numAngleX.Location = new System.Drawing.Point(807, 200);
             this.numAngleX.Minimum = new decimal(new int[] {
             100,
             0,
@@ -230,7 +228,7 @@ namespace viewer
             0,
             0,
             65536});
-            this.numAngleY.Location = new System.Drawing.Point(689, 232);
+            this.numAngleY.Location = new System.Drawing.Point(807, 232);
             this.numAngleY.Minimum = new decimal(new int[] {
             100,
             0,
@@ -250,7 +248,7 @@ namespace viewer
             0,
             0,
             65536});
-            this.numAngleZ.Location = new System.Drawing.Point(689, 264);
+            this.numAngleZ.Location = new System.Drawing.Point(807, 264);
             this.numAngleZ.Minimum = new decimal(new int[] {
             100,
             0,
@@ -265,7 +263,7 @@ namespace viewer
             // 
             this.lblRotationZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRotationZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRotationZ.Location = new System.Drawing.Point(659, 264);
+            this.lblRotationZ.Location = new System.Drawing.Point(777, 264);
             this.lblRotationZ.Name = "lblRotationZ";
             this.lblRotationZ.Size = new System.Drawing.Size(24, 24);
             this.lblRotationZ.TabIndex = 15;
@@ -275,7 +273,7 @@ namespace viewer
             // 
             this.lblRotationY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRotationY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRotationY.Location = new System.Drawing.Point(659, 232);
+            this.lblRotationY.Location = new System.Drawing.Point(777, 232);
             this.lblRotationY.Name = "lblRotationY";
             this.lblRotationY.Size = new System.Drawing.Size(24, 24);
             this.lblRotationY.TabIndex = 14;
@@ -285,7 +283,7 @@ namespace viewer
             // 
             this.lblRotationX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRotationX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRotationX.Location = new System.Drawing.Point(659, 200);
+            this.lblRotationX.Location = new System.Drawing.Point(777, 200);
             this.lblRotationX.Name = "lblRotationX";
             this.lblRotationX.Size = new System.Drawing.Size(24, 24);
             this.lblRotationX.TabIndex = 13;
@@ -294,7 +292,7 @@ namespace viewer
             // num_scaleX
             // 
             this.num_scaleX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.num_scaleX.Location = new System.Drawing.Point(689, 315);
+            this.num_scaleX.Location = new System.Drawing.Point(807, 315);
             this.num_scaleX.Maximum = new decimal(new int[] {
             300,
             0,
@@ -319,7 +317,7 @@ namespace viewer
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(686, 299);
+            this.label9.Location = new System.Drawing.Point(804, 299);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(52, 13);
             this.label9.TabIndex = 17;
@@ -328,7 +326,7 @@ namespace viewer
             // num_scaleY
             // 
             this.num_scaleY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.num_scaleY.Location = new System.Drawing.Point(689, 347);
+            this.num_scaleY.Location = new System.Drawing.Point(807, 347);
             this.num_scaleY.Maximum = new decimal(new int[] {
             300,
             0,
@@ -352,7 +350,7 @@ namespace viewer
             // num_scaleZ
             // 
             this.num_scaleZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.num_scaleZ.Location = new System.Drawing.Point(689, 379);
+            this.num_scaleZ.Location = new System.Drawing.Point(807, 379);
             this.num_scaleZ.Maximum = new decimal(new int[] {
             300,
             0,
@@ -377,7 +375,7 @@ namespace viewer
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(659, 379);
+            this.label10.Location = new System.Drawing.Point(777, 379);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(24, 24);
             this.label10.TabIndex = 22;
@@ -387,7 +385,7 @@ namespace viewer
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(659, 347);
+            this.label11.Location = new System.Drawing.Point(777, 347);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(24, 24);
             this.label11.TabIndex = 21;
@@ -397,7 +395,7 @@ namespace viewer
             // 
             this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label12.Location = new System.Drawing.Point(659, 315);
+            this.label12.Location = new System.Drawing.Point(777, 315);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(24, 24);
             this.label12.TabIndex = 20;
@@ -407,7 +405,7 @@ namespace viewer
             // 
             this.btnZoomIn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZoomIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnZoomIn.Location = new System.Drawing.Point(689, 436);
+            this.btnZoomIn.Location = new System.Drawing.Point(807, 436);
             this.btnZoomIn.Name = "btnZoomIn";
             this.btnZoomIn.Size = new System.Drawing.Size(75, 25);
             this.btnZoomIn.TabIndex = 23;
@@ -418,28 +416,17 @@ namespace viewer
             // 
             this.btnZoomOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnZoomOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnZoomOut.Location = new System.Drawing.Point(689, 405);
+            this.btnZoomOut.Location = new System.Drawing.Point(807, 405);
             this.btnZoomOut.Name = "btnZoomOut";
             this.btnZoomOut.Size = new System.Drawing.Size(75, 25);
             this.btnZoomOut.TabIndex = 24;
             this.btnZoomOut.Text = "Zoom out";
             this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
             // 
-            // btnDraw
-            // 
-            this.btnDraw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDraw.Location = new System.Drawing.Point(689, 39);
-            this.btnDraw.Name = "btnDraw";
-            this.btnDraw.Size = new System.Drawing.Size(75, 25);
-            this.btnDraw.TabIndex = 29;
-            this.btnDraw.Text = "Draw";
-            this.btnDraw.UseVisualStyleBackColor = true;
-            this.btnDraw.Click += new System.EventHandler(this.btnDraw_Click);
-            // 
             // btnOpen
             // 
             this.btnOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpen.Location = new System.Drawing.Point(689, 8);
+            this.btnOpen.Location = new System.Drawing.Point(807, 8);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 25);
             this.btnOpen.TabIndex = 30;
@@ -451,7 +438,7 @@ namespace viewer
             // 
             this.lblDistance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblDistance.Location = new System.Drawing.Point(686, 483);
+            this.lblDistance.Location = new System.Drawing.Point(804, 483);
             this.lblDistance.Name = "lblDistance";
             this.lblDistance.Size = new System.Drawing.Size(68, 16);
             this.lblDistance.TabIndex = 28;
@@ -461,11 +448,11 @@ namespace viewer
             // 
             this.numDistance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numDistance.Increment = new decimal(new int[] {
-            5,
+            2,
             0,
             0,
             0});
-            this.numDistance.Location = new System.Drawing.Point(689, 502);
+            this.numDistance.Location = new System.Drawing.Point(807, 502);
             this.numDistance.Minimum = new decimal(new int[] {
             100,
             0,
@@ -483,7 +470,8 @@ namespace viewer
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(662, 556);
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(782, 537);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 31;
@@ -491,10 +479,9 @@ namespace viewer
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(770, 647);
+            this.ClientSize = new System.Drawing.Size(884, 761);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btnOpen);
-            this.Controls.Add(this.btnDraw);
             this.Controls.Add(this.lblDistance);
             this.Controls.Add(this.numDistance);
             this.Controls.Add(this.btnZoomOut);
@@ -521,11 +508,11 @@ namespace viewer
             this.Controls.Add(this.numShiftX);
             this.Controls.Add(this.lblShift);
             this.Controls.Add(this.pictureBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(790, 690);
-            this.MinimumSize = new System.Drawing.Size(790, 690);
+            this.MaximumSize = new System.Drawing.Size(900, 800);
+            this.MinimumSize = new System.Drawing.Size(900, 800);
             this.Name = "MainForm";
             this.Text = "3D viewer";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
@@ -548,9 +535,9 @@ namespace viewer
         [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
             Application.Run(new MainForm());
         }
-
 
         //=============================Drawing procedure====================
 
@@ -562,53 +549,48 @@ namespace viewer
                 (double)num_scaleX.Value, (double)num_scaleY.Value, (double)num_scaleZ.Value);
 
             gr = Graphics.FromImage(pictureBox.Image);
-            gr.Clear(Color.DimGray);
+            gr.Clear(Color.FromArgb(64, 64, 64));
 
-            for (int i = 0; i < viewpoint.points.Length; i++)
+            foreach (var point in viewpoint.points)
             {
-                int index = Math.Min(i / ColorStep, 63);
-                double r = ParulaColorMap._parula_data[index, 0];
-                double g = ParulaColorMap._parula_data[index, 1];
-                double b = ParulaColorMap._parula_data[index, 2];
-
-                pen1.Color = Color.FromArgb((int)r, (int)g, (int)b);
-                gr.DrawEllipse(pen1, (float)viewpoint.points[i].X, (float)viewpoint.points[i].Y, 2, 2);
+                pointPen.Color = point.PointColor;
+                gr.DrawEllipse(pointPen, (float)point.X, (float)point.Y, 2, 2);
             }
+
+            //for (int i = 0; i < viewpoint.points.Length; i++)
+            //{
+            //    int index = Math.Min(i / ColorStep, 63);
+
+
+            //    //double r = ParulaColorMap.ColorData[index, 0];
+            //    //double g = ParulaColorMap.ColorData[index, 1];
+            //    //double b = ParulaColorMap.ColorData[index, 2];
+
+            //    pen1.Color = Color.FromArgb((int)r, (int)g, (int)b);
+            //    gr.DrawEllipse(pen1, (float)viewpoint.points[i].X, (float)viewpoint.points[i].Y, 2, 2);
+            //}
 
             gr.Dispose();
             pictureBox.Invalidate();
         }
 
-        private void numScaleX_ValueChanged(object sender, EventArgs e)
-        {
+        private void numScaleX_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numScaleY_ValueChanged(object sender, EventArgs e)
-        {
+        private void numScaleY_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numScaleZ_ValueChanged(object sender, EventArgs e)
-        {
+        private void numScaleZ_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numShiftX_ValueChanged(object sender, EventArgs e)
-        {
+        private void numShiftX_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numShiftY_ValueChanged(object sender, EventArgs e)
-        {
+        private void numShiftY_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numShiftZ_ValueChanged(object sender, EventArgs e)
-        {
+        private void numShiftZ_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
-
         private void btnZoomIn_Click(object sender, EventArgs e)
         {
             viewpoint.M += 10;
@@ -621,50 +603,36 @@ namespace viewer
             draw();
         }
 
-        private void numAngleX_ValueChanged(object sender, EventArgs e)
-        {
+        private void numAngleX_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numAngleY_ValueChanged(object sender, EventArgs e)
-        {
+        private void numAngleY_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numAngleZ_ValueChanged(object sender, EventArgs e)
-        {
+        private void numAngleZ_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
 
-        private void numDist_ValueChanged(object sender, EventArgs e)
-        {
+        private void numDist_ValueChanged(object sender, EventArgs e) =>
             draw();
-        }
-
-        private void btnDraw_Click(object sender, EventArgs e)
-        {
-            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-            //gr.Clear(Color.White);
-            pen1 = new Pen(Color.Black, 2);
-            draw();
-        }
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog();
             dlg.Filter = "3D attractor models|*.3da|All files|*.*";
             dlg.ShowDialog();
             string fileName = dlg.FileName;
 
-            
-            viewpoint = new View3D(pictureBox.Size);
-            viewpoint.Read(fileName);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                viewpoint = new View3D(pictureBox.Size);
+                viewpoint.Read(fileName);
 
+                textBox1.Text = TimeSpan.FromHours(-2).ToString();
 
-            ColorStep = viewpoint.points.Length / 64;
-            ParulaColorMap.Init();
-
-            textBox1.Text = TimeSpan.FromHours(-2).ToString();
+                pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+                pointPen = new Pen(Color.Black, 2);
+                draw();
+            }
         }
 
 

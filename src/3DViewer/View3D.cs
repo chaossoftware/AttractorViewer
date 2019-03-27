@@ -3,23 +3,23 @@ using System.Drawing;
 
 namespace viewer
 {
-    class View3D
+    public class View3D
     {
-        static double[,] Matrix, M_shift, M_rotX, M_rotY, M_rotZ, M_scale, M_screen, M_shiftF;
-        public structs.point3d[] points;
-
         public int M = 200;
+        public ColoredPoint3D[] points;
+        public PointsReader reader;
 
-        public reading read;
-        static procedures proc;
+        private double[,] Matrix, M_shift, M_rotX, M_rotY, M_rotZ, M_scale, M_screen, M_shiftF;
 
         public View3D(Size viewpointSize)
         {
-            Matrix = new double[4, 4] {
+            Matrix = new double[4, 4] 
+            {
                 {1, 0, 0, 0},
                 {0, 1, 0, 0},
                 {0, 0, 1, 0},
-                {0, 0, 0, 1}};
+                {0, 0, 0, 1}
+            };
 
             M_shift = new double[4, 4];
             Array.Copy(Matrix, M_shift, Matrix.Length);
@@ -42,14 +42,13 @@ namespace viewer
             M_screen = new double[4, 4];
             Array.Copy(Matrix, M_screen, Matrix.Length);
 
-            M_screen[2, 0] = viewpointSize.Width / 2;
-            M_screen[2, 1] = viewpointSize.Height / 2;
+            M_screen[2, 0] = (double)viewpointSize.Width / 2d;
+            M_screen[2, 1] = (double)viewpointSize.Height / 2d;
         }
-
 
         public void Initialize(double Distance, double numShiftX, double numShiftY, double numShiftZ, double angleX, double angleY, double angleZ, double scaleX, double scaleY, double scaleZ)
         {
-            //Array.Clear(points, 0, points.Length);
+            ////Array.Clear(points, 0, points.Length);
 
             double shiftX, shiftY, shiftZ;
             double cos, sin;
@@ -85,7 +84,6 @@ namespace viewer
             M_rotX[2, 1] = sin;
             M_rotX[2, 2] = cos;
 
-
             cos = Math.Cos(angleY);
             sin = Math.Sin(angleY);
 
@@ -93,7 +91,6 @@ namespace viewer
             M_rotY[0, 2] = sin;
             M_rotY[2, 0] = -1 * sin;
             M_rotY[2, 2] = cos;
-
 
             cos = Math.Cos(angleZ);
             sin = Math.Sin(angleZ);
@@ -109,80 +106,121 @@ namespace viewer
             M_screen[2, 3] = 1;
             M_screen[3, 3] = 0;
 
-            Matrix = proc.mult(Matrix, M_rotX);
-            Matrix = proc.mult(Matrix, M_rotY);
-            Matrix = proc.mult(Matrix, M_rotZ);
-            Matrix = proc.mult(Matrix, M_shiftF);
+            Matrix = Mult(Matrix, M_rotX);
+            Matrix = Mult(Matrix, M_rotY);
+            Matrix = Mult(Matrix, M_rotZ);
+            Matrix = Mult(Matrix, M_shiftF);
 
-            Matrix = proc.mult(Matrix, M_scale);
-            Matrix = proc.mult(Matrix, M_shift);
-            Matrix = proc.mult(Matrix, M_screen);
+            Matrix = Mult(Matrix, M_scale);
+            Matrix = Mult(Matrix, M_shift);
+            Matrix = Mult(Matrix, M_screen);
 
             for (int i = 0; i < points.Length; i++)
-                points[i] = proc.multM(read.points[i], Matrix);
+            {
+                points[i] = MultM(reader.Points[i], Matrix);
+            }
         }
 
         public void Read(string fileName)
         {
-            read = new reading(fileName);
-            proc = new procedures();
-            read.read();
-            points = new structs.point3d[read.points.Length];
+            reader = new PointsReader();
+            reader.ReadFile(fileName);
+            points = new ColoredPoint3D[reader.Points.Length];
         }
 
-        public void RemoveDuplicates()
-        {
+        //=============================Multipling matrixes====================
 
+        private double[,] Mult(double[,] A, double[,] B)
+        {
+            double[,] m = new double[4, 4];
+            double s;
+
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                {
+                    s = 0;
+                    for (int x = 0; x < 4; x++)
+                        s += A[i, x] * B[x, j];
+                    m[i, j] = s;
+                }
+            return m;
+        }
+
+        //=============================Multipling matrix & row====================
+
+        private ColoredPoint3D MultM(ColoredPoint3D sourcePoint, double[,] Matrix)
+        {
+            var resultPoint = new ColoredPoint3D()
+            {
+                PointColor = sourcePoint.PointColor
+            };
+
+            double[] sp = new double[] { sourcePoint.X, sourcePoint.Y, sourcePoint.Z, 1 };
+            double[] rp = new double[] { 0, 0, 0, 0};
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    rp[i] += sp[j] * Matrix[j, i];
+                }
+            }
+
+            resultPoint.X = rp[0] / rp[3];
+            resultPoint.Y = rp[1] / rp[3];
+            resultPoint.Z = rp[2] / rp[3];
+
+            return resultPoint;
         }
     }
-    /*
     
-    Matrix = new double[4, 4] {
-				{1,0,0,0},
-				{0,1,0,0},
-				{0,0,1,0},
-				{0,0,0,1}};
+    
+    ////Matrix = new double[4, 4] {
+				////{1,0,0,0},
+				////{0,1,0,0},
+				////{0,0,1,0},
+				////{0,0,0,1}};
 
-            M_shift = new double[4, 4] {
-				{1, 0, 0, 0},
-				{0, 1, 0, 0},
-				{0, 0, 1, 0},
-				{shiftX, shiftY, shiftZ, 1}};
+    ////        M_shift = new double[4, 4] {
+				////{1, 0, 0, 0},
+				////{0, 1, 0, 0},
+				////{0, 0, 1, 0},
+				////{shiftX, shiftY, shiftZ, 1}};
 
-            M_shiftF = new double[4, 4] {
-				{1, 0, 0, 0},
-				{0, 1, 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, d, 1}};
+    ////        M_shiftF = new double[4, 4] {
+				////{1, 0, 0, 0},
+				////{0, 1, 0, 0},
+				////{0, 0, 1, 0},
+				////{0, 0, d, 1}};
 
-            M_scale = new double[4, 4] {
-				{scaleX,0,0,0},
-				{0,scaleY,0,0},
-				{0,0,scaleZ,0},
-				{0,0,0,1}};
+    ////        M_scale = new double[4, 4] {
+				////{scaleX,0,0,0},
+				////{0,scaleY,0,0},
+				////{0,0,scaleZ,0},
+				////{0,0,0,1}};
 
-            M_rotX = new double[4, 4] {
-				{1,0,0,0},
-				{0,(float)Math.Cos(angleX),-1*(float)Math.Sin(angleX),0},
-				{0,(float)Math.Sin(angleX),(float)Math.Cos(angleX),0},
-				{0,0,0,1}};
+    ////        M_rotX = new double[4, 4] {
+				////{1,0,0,0},
+				////{0,(float)Math.Cos(angleX),-1*(float)Math.Sin(angleX),0},
+				////{0,(float)Math.Sin(angleX),(float)Math.Cos(angleX),0},
+				////{0,0,0,1}};
 
-            M_rotY = new double[4, 4] {
-				{(float)Math.Cos(angleY),0,(float)Math.Sin(angleY),0},
-				{0,1,0,0},
-				{-1*(float)Math.Sin(angleY),0,(float)Math.Cos(angleY),0},
-				{0,0,0,1}};
+    ////        M_rotY = new double[4, 4] {
+				////{(float)Math.Cos(angleY),0,(float)Math.Sin(angleY),0},
+				////{0,1,0,0},
+				////{-1*(float)Math.Sin(angleY),0,(float)Math.Cos(angleY),0},
+				////{0,0,0,1}};
 
-            M_rotZ = new double[4, 4] {
-				{Math.Cos(angleZ),-1*Math.Sin(angleZ),0,0},
-				{Math.Sin(angleZ),Math.Cos(angleZ),0,0},
-				{0,0,1,0},
-				{0,0,0,1}};
+    ////        M_rotZ = new double[4, 4] {
+				////{Math.Cos(angleZ),-1*Math.Sin(angleZ),0,0},
+				////{Math.Sin(angleZ),Math.Cos(angleZ),0,0},
+				////{0,0,1,0},
+				////{0,0,0,1}};
 
-            M_screen = new double[4, 4] {
-				{M,0,0,0},
-				{0,-1*M,0,0},
-				{pictureBox.Width/2,pictureBox.Height/2,M,1},
-				{0,0,0,0}}; 
-     * */
+    ////        M_screen = new double[4, 4] {
+				////{M,0,0,0},
+				////{0,-1*M,0,0},
+				////{pictureBox.Width/2,pictureBox.Height/2,M,1},
+				////{0,0,0,0}}; 
+     
 }
