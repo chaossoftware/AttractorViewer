@@ -9,7 +9,6 @@ namespace viewer
         Graphics gr;
         Pen pointPen;
         View3D viewpoint;
-        int ColorStep;
 
         private PictureBox pictureBox;
         private Label lblShift;
