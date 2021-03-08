@@ -34,7 +34,16 @@ namespace AttractorViewer
                 var reader = new PointsReader();
                 reader.ReadFile(dlg.FileName);
                 centerPoint = reader.CenterPoint;
-                ConstructAttractorModel(reader.Points, reader.Multiplier);
+
+                if (cboxTrajectory.IsChecked.Value)
+                {
+                    ConstructAttractorModelPath(reader.Points, reader.Multiplier);
+                }
+                else
+                {
+                    ConstructAttractorModel(reader.Points, reader.Multiplier);
+                }
+
                 DrawAttractor();
 
                 angleX = 0;
@@ -45,7 +54,7 @@ namespace AttractorViewer
 
         private void ConstructAttractorModel(HashSet<ColoredPoint3D> points, double multiplier)
         {
-            var _cubesCreator = new CubesCreator();
+            var _cubesCreator = new SpheresCreator();
 
             attractor = new ModelVisual3D();
             var group = new Model3DGroup();
@@ -53,8 +62,49 @@ namespace AttractorViewer
             foreach (var point in points)
             {
                 var material = new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(point.PointColor.A, point.PointColor.R, point.PointColor.G, point.PointColor.B)));
-                var childModel = _cubesCreator.CreateModel(material, point.X * multiplier, point.Y * multiplier, point.Z * multiplier, 0.1);
+                var childModel = _cubesCreator.CreateModel(material);
+                var transform = new Transform3DGroup();
+                transform.Children.Add(new ScaleTransform3D(0.1, 0.1, 0.1));
+                transform.Children.Add(new TranslateTransform3D(point.X * multiplier, point.Y * multiplier, point.Z * multiplier));
+                childModel.Transform = transform;
                 group.Children.Add(childModel);
+            }
+
+            group.Freeze();
+            attractor.Content = group;
+        }
+
+        private void ConstructAttractorModelPath(HashSet<ColoredPoint3D> points, double multiplier)
+        {
+            var _cubesCreator = new SegmentsCreator();
+
+            attractor = new ModelVisual3D();
+            var group = new Model3DGroup();
+
+            bool firstPoint = true;
+            Point3D previousPoint = new Point3D(0, 0, 0);
+            //Point3D currentPoint;
+
+            foreach (var point in points)
+            { 
+                var currentPoint = new Point3D(point.X * multiplier, point.Y * multiplier, point.Z * multiplier);
+
+                if (!firstPoint)
+                {
+                    var material = new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(point.PointColor.A, point.PointColor.R, point.PointColor.G, point.PointColor.B)));
+                    var childModel = _cubesCreator.CreateModel(material, previousPoint, currentPoint, 0.1);
+                    //var transform = new Transform3DGroup();
+                    //transform.Children.Add(new ScaleTransform3D(0.1, 0.1, 0.1));
+                    //transform.Children.Add(new TranslateTransform3D(point.X * multiplier, point.Y * multiplier, point.Z * multiplier));
+                    //childModel.Transform = transform;
+                    group.Children.Add(childModel);
+                }
+                else
+                {
+                    firstPoint = false;
+                }
+
+                previousPoint = currentPoint;
             }
 
             group.Freeze();

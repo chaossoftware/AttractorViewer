@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
-using MathLib.DrawEngine.Charts.ColorMaps;
+using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
 
 namespace AttractorViewer
 {

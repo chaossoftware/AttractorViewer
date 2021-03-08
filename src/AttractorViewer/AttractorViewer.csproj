@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -56,6 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SegmentsCreator.cs" />
+    <Compile Include="SpheresCreator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,7 +70,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ColoredPoint3D.cs" />
-    <Compile Include="CubesCreator.cs" />
     <Compile Include="IModelCreator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -102,9 +106,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MathLib\MathLib.csproj">
+    <Resource Include="App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChaosSoft.Core\ChaosSoft.Core.csproj">
       <Project>{eda2c4f0-1d19-4fc8-a608-5b0607eea67a}</Project>
-      <Name>MathLib</Name>
+      <Name>ChaosSoft.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
