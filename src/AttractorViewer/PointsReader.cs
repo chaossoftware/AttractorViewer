@@ -1,5 +1,5 @@
-﻿using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
-using System;
+﻿using ChaosSoft.Core;
+using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -64,7 +64,7 @@ namespace AttractorViewer
             var yAmplitude = yMax - yMin;
             var zAmplitude = zMax - zMin;
 
-            var maxAmplitude = Math.Max(Math.Max(xAmplitude, yAmplitude), zAmplitude);
+            var maxAmplitude = FastMath.Max(FastMath.Max(xAmplitude, yAmplitude), zAmplitude);
 
             Multiplier =  35 / maxAmplitude;
             CenterPoint = new Point3D((xMin + xAmplitude / 2) * Multiplier, (yMin + yAmplitude / 2) * Multiplier, (zMin + xAmplitude / 2) * Multiplier);
