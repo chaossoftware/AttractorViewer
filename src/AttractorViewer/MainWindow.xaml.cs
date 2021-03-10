@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -20,6 +21,13 @@ namespace AttractorViewer
         public MainWindow()
         {
             InitializeComponent();
+
+            foreach (var type in typeof(ColorMap).GetEnumValues())
+            {
+                comboColorMap.Items.Add(type);
+            }
+
+            comboColorMap.SelectedIndex = 0;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -31,7 +39,7 @@ namespace AttractorViewer
 
             if (dlg.ShowDialog().Value)
             {
-                var reader = new PointsReader();
+                var reader = new PointsReader((ColorMap)comboColorMap.SelectedItem);
                 reader.ReadFile(dlg.FileName);
                 centerPoint = reader.CenterPoint;
 
@@ -83,7 +91,6 @@ namespace AttractorViewer
 
             bool firstPoint = true;
             Point3D previousPoint = new Point3D(0, 0, 0);
-            //Point3D currentPoint;
 
             foreach (var point in points)
             { 
@@ -92,11 +99,7 @@ namespace AttractorViewer
                 if (!firstPoint)
                 {
                     var material = new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(point.PointColor.A, point.PointColor.R, point.PointColor.G, point.PointColor.B)));
-                    var childModel = _cubesCreator.CreateModel(material, previousPoint, currentPoint, 0.1);
-                    //var transform = new Transform3DGroup();
-                    //transform.Children.Add(new ScaleTransform3D(0.1, 0.1, 0.1));
-                    //transform.Children.Add(new TranslateTransform3D(point.X * multiplier, point.Y * multiplier, point.Z * multiplier));
-                    //childModel.Transform = transform;
+                    var childModel = _cubesCreator.CreateModel(material, previousPoint, currentPoint, 0.03);
                     group.Children.Add(childModel);
                 }
                 else

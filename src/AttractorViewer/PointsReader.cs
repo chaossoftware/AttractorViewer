@@ -1,14 +1,21 @@
-﻿using System;
+﻿using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
-using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
 
 namespace AttractorViewer
 {
     public class PointsReader
     {
+        private readonly ColorMap _color;
+
+        public PointsReader(ColorMap color)
+        {
+            _color = color;
+        }
+
         public HashSet<ColoredPoint3D> Points { get; protected set; }
 
         public Point3D CenterPoint { get; protected set; }
@@ -18,7 +25,17 @@ namespace AttractorViewer
         public void ReadFile(string fileName)
         {
             var lines = File.ReadAllLines(fileName);
-            var colorMap = new ParulaColorMap(0, lines.Length - 1);
+            IColorMap colorMap;
+
+            if (_color.Equals(ColorMap.Orange))
+            {
+                colorMap = new OrangeColorMap(0, lines.Length - 1);
+            }
+            else 
+            {
+                colorMap = new ParulaColorMap(0, lines.Length - 1);
+            }
+
             Points = new HashSet<ColoredPoint3D>();
 
             for (int i = 0; i < lines.Length; i++)
