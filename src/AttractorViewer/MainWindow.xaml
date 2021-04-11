@@ -7,13 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="900" KeyDown="Window_KeyDown" ResizeMode="NoResize" Icon="App.ico">
     <Grid Background="#FF1E1E1E" MouseWheel="viewport_MouseWheel" >
-        <Viewport3D x:Name="viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,100,0" IsHitTestVisible="False">
+        <Viewport3D x:Name="viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,100,0" IsHitTestVisible="False" ClipToBounds="False">
             <Viewport3D.Camera>
                 <OrthographicCamera x:Name="Camera" Position="-80,-80,100" LookDirection="1,1,-1" UpDirection="0,0,1" Width="100"/>
             </Viewport3D.Camera>
         </Viewport3D>
-        <Button Content="Open" Margin="0,100,10,0" VerticalAlignment="Top" Click="Button_Click" HorizontalAlignment="Right" Width="75"/>
         <CheckBox x:Name="cboxTrajectory" IsChecked="False" Content="Trajectory" Margin="0,10,10,0" VerticalAlignment="Top" Foreground="#FFC5C5C5" RenderTransformOrigin="0.507,-0.8" FlowDirection="RightToLeft" HorizontalAlignment="Right" Width="71"/>
-        <ComboBox x:Name="comboColorMap" Margin="0,30,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+        <CheckBox x:Name="cboxAnimated" IsChecked="False" Content="Animated" Margin="0,30,10,0" VerticalAlignment="Top" Foreground="#FFC5C5C5" RenderTransformOrigin="0.507,-0.8" FlowDirection="RightToLeft" HorizontalAlignment="Right" Width="71"/>
+        <ComboBox x:Name="comboColorMap" Margin="0,50,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+        <Button Content="Open" Margin="0,100,10,0" VerticalAlignment="Top" Click="Button_Click" HorizontalAlignment="Right" Width="75"/>
+        <Button Content="Save picture" Margin="0,125,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="Button_Click_1"/>
     </Grid>
 </Window>
