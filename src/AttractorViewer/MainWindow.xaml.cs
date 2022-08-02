@@ -1,4 +1,4 @@
-﻿using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
+﻿using ChaosSoft.DrawEngine.ColorMaps;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

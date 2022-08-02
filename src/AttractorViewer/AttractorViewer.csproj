@@ -113,6 +113,10 @@
       <Project>{eda2c4f0-1d19-4fc8-a608-5b0607eea67a}</Project>
       <Name>ChaosSoft.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ChaosSoft.DrawEngine\ChaosSoft.DrawEngine.csproj">
+      <Project>{7c94c80e-20c5-4707-8ab1-b37bea92aa11}</Project>
+      <Name>ChaosSoft.DrawEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

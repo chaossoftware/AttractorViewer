@@ -1,5 +1,5 @@
 ﻿using ChaosSoft.Core;
-using ChaosSoft.Core.DrawEngine.Charts.ColorMaps;
+using ChaosSoft.DrawEngine.ColorMaps;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
