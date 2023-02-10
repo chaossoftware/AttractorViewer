@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AttractorViewer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="900" KeyDown="Window_KeyDown" ResizeMode="NoResize" Icon="App.ico">
+        Title="MainWindow" Height="800" Width="900" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Grid Background="#FF1E1E1E" MouseWheel="viewport_MouseWheel" >
         <Viewport3D x:Name="viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,100,0" IsHitTestVisible="False" ClipToBounds="False">
             <Viewport3D.Camera>
@@ -17,5 +17,10 @@
         <ComboBox x:Name="comboColorMap" Margin="0,50,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
         <Button Content="Open" Margin="0,100,10,0" VerticalAlignment="Top" Click="Button_Click" HorizontalAlignment="Right" Width="75"/>
         <Button Content="Save picture" Margin="0,125,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="Button_Click_1"/>
+
+        <Label Margin="0,240,10,0" Content="Pt. radius" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+        <TextBox x:Name="textPtRadius" Margin="0,270,10,0" TextWrapping="Wrap" Text="0.5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+        <Label Margin="0,300,10,0" Content="Thickness" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
+        <TextBox x:Name="textThickness" Margin="0,330,10,0" TextWrapping="Wrap" Text="0.03" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
     </Grid>
 </Window>

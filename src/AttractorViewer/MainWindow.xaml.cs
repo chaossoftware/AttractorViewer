@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,7 +76,9 @@ namespace AttractorViewer
 
         private void ConstructAttractorModel(HashSet<ColoredPoint3D> points, double multiplier)
         {
-            var _cubesCreator = new SpheresCreator();
+            double ptRadius = Convert.ToDouble(textPtRadius.Text, CultureInfo.InvariantCulture);
+
+            var _cubesCreator = new SpheresCreator(ptRadius);
 
             var material = new DiffuseMaterial(Brushes.Black);
             var prevColor = System.Drawing.Color.Black;
@@ -115,6 +118,8 @@ namespace AttractorViewer
             var material = new DiffuseMaterial(Brushes.Black);
             var prevColor = System.Drawing.Color.Black;
 
+            double thickness = Convert.ToDouble(textThickness.Text, CultureInfo.InvariantCulture);
+
             foreach (var point in points)
             { 
                 var currentPoint = new Point3D(point.X * multiplier, point.Y * multiplier, point.Z * multiplier);
@@ -127,7 +132,7 @@ namespace AttractorViewer
                         prevColor = point.PointColor;
                     }
 
-                    var childModel = _cubesCreator.CreateModel(material, previousPoint, currentPoint, 0.03);
+                    var childModel = _cubesCreator.CreateModel(material, previousPoint, currentPoint, thickness);
 
                     if (animated)
                     {
@@ -230,7 +235,7 @@ namespace AttractorViewer
                     angleZ -= Step;
                     break;
                 default:
-                    break;
+                    return;
             }
 
             PositionCamera(x, y, z);

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
 
@@ -10,7 +6,6 @@ namespace AttractorViewer
 {
     public class SpheresCreator
     {
-        private const double Radius = 0.5;
         private const int Thetas = 15;
         private const int Phis = 10;
 
@@ -23,7 +18,7 @@ namespace AttractorViewer
 
         private readonly MeshGeometry3D _mesh;
 
-        public SpheresCreator()
+        public SpheresCreator(double radius)
         {
             dphi = Math.PI / Phis;
             dtheta = 2 * Math.PI / Thetas;
@@ -37,8 +32,8 @@ namespace AttractorViewer
             double phi1 = Math.PI / 2;
             for (int p = 0; p <= Phis; p++)
             {
-                double r1 = Radius * Math.Cos(phi1);
-                double y1 = Radius * Math.Sin(phi1);
+                double r1 = radius * Math.Cos(phi1);
+                double y1 = radius * Math.Sin(phi1);
 
                 double theta = 0;
                 for (int t = 0; t <= Thetas; t++)
