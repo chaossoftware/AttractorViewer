@@ -1,9 +1,8 @@
 ﻿using System.Windows.Media.Media3D;
 
-namespace AttractorViewer
+namespace AttractorViewer;
+
+public interface IModelCreator
 {
-    public interface IModelCreator
-    {
-        ModelVisual3D CreateModel(Material material);
-    }
+    ModelVisual3D CreateModel(Material material);
 }
