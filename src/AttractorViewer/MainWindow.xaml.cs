@@ -1,4 +1,4 @@
-﻿using ChaosSoft.DrawEngine.ColorMaps;
+﻿using AttractorViewer.ColorMaps;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
